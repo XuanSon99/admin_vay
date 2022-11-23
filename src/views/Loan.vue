@@ -3,7 +3,7 @@
     <div class="item secondary">
       <v-card-title>
         <v-icon class="mr-2" color="primary" large
-          >mdi-view-dashboard-outline</v-icon
+          >mdi-layers-outline</v-icon
         >
         借款列表
         <v-spacer></v-spacer>

@@ -111,24 +111,29 @@ export default {
           route: "/",
         },
         {
-          icon: "mdi-autorenew",
+          icon: "mdi-account-circle-outline",
           text: "用户管理",
           route: "/user",
         },
         {
-          icon: "mdi-hand-coin-outline",
+          icon: "mdi-layers-outline",
           text: "借款列表",
           route: "/loan",
         },
         {
-          icon: "mdi-swap-horizontal",
+          icon: "mdi-wallet-outline",
           text: "钱包管理",
           route: "/wallet",
         },
         {
-          icon: "mdi-history",
+          icon: "mdi-cart-arrow-down",
           text: "提现管理",
           route: "/withdraw",
+        },
+         {
+          icon: "mdi-clipboard-text-multiple-outline",
+          text: "还款管理",
+          route: "/bill",
         },
         {
           icon: "mdi-cog-outline",

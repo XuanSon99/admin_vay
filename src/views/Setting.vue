@@ -19,7 +19,7 @@
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn small class="info mr-2" @click="editItem(item, 1)">
-            Sửa
+            更新
           </v-btn>
           <!-- <v-btn small class="error" @click="editItem(item, 2)">Xóa</v-btn> -->
         </template>

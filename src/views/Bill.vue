@@ -3,7 +3,7 @@
     <div class="item secondary">
       <v-card-title>
         <v-icon class="mr-2" color="primary" large
-          >mdi-view-dashboard-outline</v-icon
+          >mdi-clipboard-text-multiple-outline</v-icon
         >
         还款管理
         <v-spacer></v-spacer>
