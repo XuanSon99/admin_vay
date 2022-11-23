@@ -131,9 +131,9 @@ export default {
           route: "/withdraw",
         },
         {
-          icon: "mdi-link-variant",
-          text: "还款管理",
-          route: "/bill",
+          icon: "mdi-cog-outline",
+          text: "系统设置",
+          route: "/setting",
         },
       ],
       password: "",

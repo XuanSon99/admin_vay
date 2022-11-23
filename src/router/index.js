@@ -53,6 +53,14 @@ const routes = [
     }
   },
   {
+    path: '/setting',
+    name: 'Setting',
+    component: () => import('../views/Setting.vue'),
+    meta: {
+      show: true
+    }
+  },
+  {
     path: '/bill',
     name: 'Bill',
     component: () => import('../views/Bill.vue'),
