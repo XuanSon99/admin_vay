@@ -2,9 +2,7 @@
   <main>
     <div class="item secondary">
       <v-card-title>
-        <v-icon class="mr-2" color="primary" large
-          >mdi-layers-outline</v-icon
-        >
+        <v-icon class="mr-2" color="primary" large>mdi-layers-outline</v-icon>
         借款列表
         <v-spacer></v-spacer>
         <v-text-field
@@ -28,6 +26,15 @@
           </p>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
+          <v-btn
+            small
+            class="primary mb-2"
+            @click="editItem(item, 4)"
+            v-if="item.status != 1"
+          >
+            贷款确认书
+          </v-btn>
+          <br v-if="item.status != 1" />
           <v-btn small class="orange mb-2" @click="editItem(item, 1)">
             固定贷款额度
           </v-btn>
@@ -42,7 +49,7 @@
           <br />
           <v-btn
             small
-            class="primary"
+            class="default"
             @click="$router.push('/user/' + item.phone)"
           >
             用户资料
@@ -132,6 +139,22 @@
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
+      <v-card v-if="type_edit == 4">
+        <v-card-title>
+          <span>贷款确认书?</span>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="default" @click="dialog = false"> 取消 </v-btn>
+          <v-btn color="primary" @click="confirmLoan"> 确定 </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </main>
 </template>
@@ -157,10 +180,14 @@ export default {
       amount: "",
       state_list: "",
       state: "",
+      phone: "",
     };
   },
   mounted() {
     this.getData();
+    this.CallAPI("get", "state", {}, (res) => {
+      this.state_list = res.data;
+    });
   },
   methods: {
     stateDetail(id) {
@@ -171,13 +198,11 @@ export default {
       this.CallAPI("get", "contract", {}, (res) => {
         this.data = res.data;
       });
-      this.CallAPI("get", "state", {}, (res) => {
-        this.state_list = res.data;
-      });
     },
     editItem(item, type_edit) {
       this.type_edit = type_edit;
       this.amount = item.amount;
+      this.phone = item.phone;
       this.state = this.stateDetail(item.status);
       this.edit_id = item.id;
       this.dialog = true;
@@ -199,6 +224,20 @@ export default {
         "contract/" + this.edit_id,
         {
           amount: this.amount,
+        },
+        (response) => {
+          this.$toast.success("成功的");
+          this.getData();
+          this.dialog = false;
+        }
+      );
+    },
+    confirmLoan() {
+      this.CallAPI(
+        "post",
+        "loan-confirm",
+        {
+          phone: this.phone,
         },
         (response) => {
           this.$toast.success("成功的");

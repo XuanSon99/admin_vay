@@ -2,9 +2,7 @@
   <main>
     <div class="item secondary">
       <v-card-title>
-        <v-icon class="mr-2" color="primary" large
-          >mdi-cart-arrow-down</v-icon
-        >
+        <v-icon class="mr-2" color="primary" large>mdi-cart-arrow-down</v-icon>
         提现管理
         <v-spacer></v-spacer>
         <v-text-field
@@ -72,9 +70,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn class="default" @click="dialog = false"> 取消 </v-btn>
-          <v-btn color="primary" @click="confirmWithdraw('success')">
-            确定
-          </v-btn>
+          <v-btn color="primary" @click="confirmWithdrawSuccess"> 确定 </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -117,6 +113,7 @@ export default {
       data: [],
       edit_id: "",
       type_edit: 1,
+      phone: "",
     };
   },
   mounted() {
@@ -131,6 +128,7 @@ export default {
     editItem(item, type_edit) {
       this.type_edit = type_edit;
       this.edit_id = item.id;
+      this.phone = item.phone;
       this.dialog = true;
     },
     deleteItemConfirm() {
@@ -147,6 +145,18 @@ export default {
         {
           status: status,
         },
+        (response) => {
+          this.$toast.success("成功的");
+          this.getData();
+          this.dialog = false;
+        }
+      );
+    },
+    confirmWithdrawSuccess() {
+      this.CallAPI(
+        "post",
+        "withdraw-confirm",
+        { phone: this.phone },
         (response) => {
           this.$toast.success("成功的");
           this.getData();

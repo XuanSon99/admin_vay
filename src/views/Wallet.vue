@@ -2,9 +2,7 @@
   <main class="custom-pd">
     <div class="item secondary">
       <v-card-title>
-        <v-icon class="mr-2" color="primary" large
-          >mdi-wallet-outline</v-icon
-        >
+        <v-icon class="mr-2" color="primary" large>mdi-wallet-outline</v-icon>
         钱包管理
         <v-spacer></v-spacer>
         <v-text-field
@@ -18,6 +16,9 @@
       <v-data-table :headers="headers" :items="data" :search="search">
         <template v-slot:[`item.created_at`]="{ item }">
           {{ formatDate(item.created_at) }}
+        </template>
+        <template v-slot:[`item.balance`]="{ item }">
+          {{ formatMoney(item.balance) }}
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn small class="info mr-2" @click="editItem(item, 1)">
@@ -141,6 +142,12 @@ export default {
     },
     formatDate(date) {
       return date.slice(0, 10);
+    },
+    formatMoney(value) {
+      if (!value) return 0;
+      return String(value)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
   },
 };
