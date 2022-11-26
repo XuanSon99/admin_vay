@@ -69,6 +69,14 @@ const routes = [
     }
   },
   {
+    path: '/status',
+    name: 'Status',
+    component: () => import('../views/Status.vue'),
+    meta: {
+      show: true
+    }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),

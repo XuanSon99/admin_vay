@@ -140,6 +140,11 @@ export default {
           text: "系统设置",
           route: "/setting",
         },
+        {
+          icon: "mdi-cog-outline",
+          text: "状态管理",
+          route: "/status",
+        },
       ],
       password: "",
       dialog: false,

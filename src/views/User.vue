@@ -46,33 +46,18 @@
           >
             查看资料
           </v-btn>
-          <v-btn small class="info mr-2" @click="editItem(item, false)">
+          <v-btn small class="purple mr-2" @click="editItem(item, 3)">
+            发送通知
+          </v-btn>
+          <v-btn small class="info mr-2" @click="editItem(item, 1)">
             修改密码
           </v-btn>
-          <v-btn small class="error" @click="editItem(item, true)"
-            >删除订单</v-btn
-          >
+          <v-btn small class="error" @click="editItem(item, 2)">删除订单</v-btn>
         </template>
       </v-data-table>
     </div>
     <v-dialog v-model="dialog" max-width="400px">
-      <v-card v-if="edit">
-        <v-card-title>
-          <span>你确定你要删除？</span>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="default" @click="dialog = false"> 取消 </v-btn>
-          <v-btn color="primary" @click="deleteItemConfirm"> 确定 </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-      <v-card v-else>
+      <v-card v-if="type_edit == 1">
         <v-card-title>
           <span>输入您的新密码</span>
           <v-spacer></v-spacer>
@@ -98,6 +83,53 @@
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
+      <v-card v-if="type_edit == 2">
+        <v-card-title>
+          <span>你确定你要删除？</span>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="default" @click="dialog = false"> 取消 </v-btn>
+          <v-btn color="primary" @click="deleteItemConfirm"> 确定 </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+      <v-card v-if="type_edit == 3">
+        <v-card-title>
+          <span>留言内容</span>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <div class="mx-6 mt-6">
+          <v-select
+            :items="['success','pending','failed']"
+            v-model="status"
+            label="地位"
+            outlined
+          ></v-select>
+          <v-text-field
+            v-model="content"
+            outlined
+            label="内容"
+            clearable
+          ></v-text-field>
+        </div>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="default" @click="dialog = false"> 取消 </v-btn>
+          <v-btn color="primary" @click="sendNotifi"> 确定 </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </main>
 </template>
@@ -119,8 +151,11 @@ export default {
       ],
       data: [],
       edit_id: "",
-      edit: true,
+      type_edit: 0,
       password: "",
+      phone: "",
+      status: "pending",
+      content: ""
     };
   },
   mounted() {
@@ -133,8 +168,9 @@ export default {
       });
     },
     editItem(item, status) {
-      this.edit = status;
+      this.type_edit = status;
       this.edit_id = item.id;
+      this.phone = item.phone;
       this.dialog = true;
     },
     deleteItemConfirm() {
@@ -143,6 +179,26 @@ export default {
         this.getData();
         this.dialog = false;
       });
+    },
+    sendNotifi() {
+      if (!this.content) {
+        this.$toast.error("请输入足够的信息");
+        return;
+      }
+      this.CallAPI(
+        "post",
+        "notifications",
+        {
+          phone: this.phone,
+          status: this.status,
+          content: this.content,
+        },
+        (res) => {
+          this.$toast.success("成功的");
+          this.dialog = false;
+          this.content = "";
+        }
+      );
     },
     changePassword() {
       if (!this.password) {

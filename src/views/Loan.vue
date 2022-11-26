@@ -21,7 +21,10 @@
           {{ formatMoney(item.amount) }}
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <p :style="{ color: `#${stateDetail(item.status).color}` }">
+          <p
+            v-if="stateDetail(item.status)"
+            :style="{ color: `${stateDetail(item.status).color}` }"
+          >
             {{ stateDetail(item.status).status }}
           </p>
         </template>
@@ -113,20 +116,26 @@
           <v-select
             :items="state_list"
             v-model="state"
-            label="Status"
+            label="地位"
             outlined
             item-text="status"
             return-object
           ></v-select>
           <v-text-field
             :value="state.color"
-            label="Color"
+            label="颜色"
             outlined
             readonly
           ></v-text-field>
           <v-text-field
             :value="state.description"
-            label="description"
+            label="描述"
+            outlined
+            readonly
+          ></v-text-field>
+          <v-text-field
+            :value="state.message"
+            label="信息"
             outlined
             readonly
           ></v-text-field>
@@ -203,7 +212,6 @@ export default {
       this.type_edit = type_edit;
       this.amount = item.amount;
       this.phone = item.phone;
-      this.state = this.stateDetail(item.status);
       this.edit_id = item.id;
       this.dialog = true;
     },
