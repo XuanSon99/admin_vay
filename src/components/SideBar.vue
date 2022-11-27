@@ -136,15 +136,15 @@ export default {
           route: "/bill",
         },
         {
-          icon: "mdi-cog-outline",
-          text: "系统设置",
-          route: "/setting",
-        },
-        {
-          icon: "mdi-cog-outline",
+          icon: "mdi-pencil-box-outline",
           text: "状态管理",
           route: "/status",
         },
+        {
+          icon: "mdi-cog-outline",
+          text: "系统设置",
+          route: "/setting",
+        }, 
       ],
       password: "",
       dialog: false,
